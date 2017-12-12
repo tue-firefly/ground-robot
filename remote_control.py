@@ -24,7 +24,7 @@ def udp_socket():
     sock.bind((UDP_IP, UDP_PORT))
     # Reduce the socket timeout
     sec	= 1
-    usec = 500000
+    usec = 0
     timeval	= struct.pack('ll', sec, usec)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVTIMEO, timeval)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1)
@@ -50,8 +50,8 @@ if __name__ == '__main__':
             print("Sending: {}".format((v_x, v_y, psi)))
             send_cmd(ser, v_x, v_y, psi)
         except BlockingIOError:
-            # Nothing received, no problem
-            pass
+            print("Socket timed out, stopping motors")
+            send_cmd(ser, 0, 0, 0)
         except KeyboardInterrupt:
             print()
             send_cmd(ser, 0, 0, 0)
