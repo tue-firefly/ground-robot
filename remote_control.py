@@ -50,7 +50,7 @@ if __name__ == '__main__':
             print("Sending: {}".format((v_x, v_y, psi)))
             send_cmd(ser, v_x, v_y, psi)
         except BlockingIOError:
-            print("Socket timed out, stopping motors")
+            # Socket timed out, stopping motors
             send_cmd(ser, 0, 0, 0)
         except KeyboardInterrupt:
             print()
