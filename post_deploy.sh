@@ -2,6 +2,9 @@
 
 echo "Configuring Ground robot"
 
+echo "Stopping any current remote_control process"
+sudo systemctl stop remote_control
+
 echo "Register remote control service to systemd"
 sudo mv remote_control.service /etc/systemd/system/
 

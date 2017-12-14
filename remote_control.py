@@ -7,6 +7,7 @@ Maintainer: Daan de Graaf
 import serial 
 import socket
 import struct
+import time
 from comm import open_serial, send_cmd
 
 # UDP socket parameters
@@ -30,9 +31,19 @@ def udp_socket():
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1)
     return sock
 
+def boot_tune(ser):
+    # Plays a basic tune using the motors to signal the system is ready
+    for _ in range(5):
+        send_cmd(ser, 10, 0, 0)
+        time.sleep(0.2)
+        send_cmd(ser, 0, 0, 0)
+        time.sleep(0.2)
+
 if __name__ == '__main__':
     sock = udp_socket()
     ser = open_serial()
+
+    boot_tune(ser) 
 
     v_x = 0
     v_y = 0
@@ -47,7 +58,6 @@ if __name__ == '__main__':
 
             v_x += f_x * MASS
             v_y += f_y * MASS
-            print("Sending: {}".format((v_x, v_y, psi)))
             send_cmd(ser, v_x, v_y, psi)
         except BlockingIOError:
             # Socket timed out, stopping motors

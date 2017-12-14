@@ -6,6 +6,7 @@ import argparse
 from paramiko import SSHClient
 from paramiko.ssh_exception import SSHException
 from os import path
+import sys
 
 SSH_PORT = 22
 PI_USER = 'pi'
@@ -41,7 +42,7 @@ def deploy(ip, username, password):
         print("Copying files..")
         sftp = ssh.open_sftp()
         for filename in DEPLOY_FILES:
-            local_path = path.join('..', filename)
+            local_path = path.join(path.dirname(sys.argv[0]), '..', filename)
             remote_path = DEPLOY_PATH + filename
             print('{} --> {}:{}'.format(local_path.ljust(30), ip, remote_path))
             sftp.put(local_path, remote_path, confirm=True)
