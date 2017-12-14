@@ -36,3 +36,15 @@ class SSHDiscoverer:
             except:
                 pass
         return self._live_robots
+
+# This is meant to be a library, but can also be used as a quick cli tool
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) > 1:
+        iface_ip = sys.argv[1]
+    else:
+        iface_ip = get_ip()
+    ssh = SSHDiscoverer('pi', 'raspberry', iface_ip)
+    print("Searching robots on {}".format(ssh.cidr))
+    for ip in ssh.live_robots():
+        print("Robot found: {}".format(ip))

@@ -1,3 +1,4 @@
+#!/bin/env python3
 import sys
 from ip import get_ip
 from discover import SSHDiscoverer
@@ -17,8 +18,7 @@ DEPLOY_FILES = [
     'remote_control.service',
     'post_deploy.sh'
 ]
-POST_DEPLOY_COMMAND = 'sh ' + DEPLOY_PATH + DEPLOY_FILES[-1]
-
+POST_DEPLOY_COMMAND = 'cd {} && bash {}'.format(DEPLOY_PATH, DEPLOY_FILES[-1])
 class DeployException(Exception):
     def __init__(self, value):
         self.value = value
@@ -79,6 +79,10 @@ if __name__ == "__main__":
         if len(targets) == 0:
             print("Invalid list of targets. Make sure there a no spaces in between!")
             sys.exit(1)
+
+    if not targets:
+        print("No targets found. Deployment failed.")
+        sys.exit(1)
     
     confirm = input('Deploy to {}? [Y/n] [ENTER] '.format(", ".join(targets)))
     if confirm.lower() != 'y':

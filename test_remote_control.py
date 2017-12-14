@@ -6,8 +6,12 @@ Maintainer: Daan de Graaf
 import socket
 import struct
 import time
+import sys
 
-UDP_IP = "0.0.0.0"
+if len(sys.argv) < 2:
+    print("ERR: Pass target ip as input")
+    sys.exit(1)
+UDP_IP = sys.argv[1]
 UDP_PORT = 12000
 
 sock = socket.socket(socket.AF_INET, # Internet

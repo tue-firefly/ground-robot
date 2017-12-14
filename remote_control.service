@@ -1,0 +1,15 @@
+[Unit]
+Description=Ground robot remote control
+
+[Service]
+ExecStart=/usr/bin/env python3 /home/pi/remote_control/remote_control.py
+WorkingDirectory=/home/pi
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=remote_control
+User=pi
+Group=pi
+
+[Install]
+WantedBy=multi-user.target
