@@ -2,8 +2,8 @@
 Description=Ground robot remote control
 
 [Service]
-ExecStart=/usr/bin/env python3 /home/pi/remote_control/remote_control.py
-WorkingDirectory=/home/pi
+ExecStart=/bin/sh /home/pi/remote_control/start.sh
+WorkingDirectory=/home/pi/remote_control
 Restart=always
 StandardOutput=syslog
 StandardError=syslog

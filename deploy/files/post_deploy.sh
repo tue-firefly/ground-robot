@@ -1,5 +1,4 @@
 #!/bin/bash
-
 echo "Configuring Ground robot"
 
 echo "Stopping any current remote_control process"

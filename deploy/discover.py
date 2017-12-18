@@ -1,6 +1,7 @@
 from ip import get_ip
 from ping import ping_sweep
 from paramiko import SSHClient
+from paramiko.client import AutoAddPolicy
 
 # SSH servers run on port 22 by default
 PORT = 22
@@ -28,7 +29,7 @@ class SSHDiscoverer:
         self._live_robots = []
         for ip in self.live_hosts():
             client = SSHClient()
-            client.load_system_host_keys()
+            client.set_missing_host_key_policy(AutoAddPolicy())
             try:
                 client.connect(ip, PORT, 'pi', 'raspberry')
                 client.close()
