@@ -18,9 +18,9 @@ sock = socket.socket(socket.AF_INET, # Internet
                      socket.SOCK_DGRAM) # UDP
 
 def send(x, y, psi):
-    sock.sendto(struct.pack("=ddd", x, y, psi), (UDP_IP, UDP_PORT))
+    sock.sendto(struct.pack("=Bddd", 1, x, y, psi), (UDP_IP, UDP_PORT))
 
 
-send(200, 0, 0)
+send(200, 0, 200)
 time.sleep(2)
 send(-200, 0, 0)

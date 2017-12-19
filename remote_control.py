@@ -14,8 +14,8 @@ from comm import open_serial, send_cmd
 UDP_IP = '0.0.0.0'
 UDP_PORT = 12000
 
-# A command consists of 3 doubles, which are 8 bytes long each
-COMMAND_SIZE = 3*8
+# A command consists of 3 doubles, which are 8 bytes long each. This is prefixed by a flag byte
+COMMAND_SIZE = 1+3*8
 
 # Mass of the robot for calculating velocity from force
 MASS = 1
@@ -51,13 +51,18 @@ if __name__ == '__main__':
         try:
             # Read and parse command
             data, addr = sock.recvfrom(COMMAND_SIZE)
-            (f_x, f_y, psi) = struct.unpack('=ddd', data)
+            (flag, f_x, f_y, psi) = struct.unpack('=Bddd', data)
+            if flag == 1:
+                # Forward euler's method
+                # TODO That's for later
 
-            # Forward euler's method
-            # TODO That's for later
-
-            v_x += f_x * MASS
-            v_y += f_y * MASS
+                v_x += f_x * MASS
+                v_y += f_y * MASS
+                print("Using acceleration")
+            elif flag == 2:
+                print("Using velocity")
+                v_x = f_x
+                v_y = f_y
             send_cmd(ser, v_x, v_y, psi)
         except BlockingIOError:
             # Socket timed out, stopping motors
