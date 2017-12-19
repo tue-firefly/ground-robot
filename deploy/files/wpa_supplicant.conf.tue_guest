@@ -4,6 +4,6 @@ update_config=1
 country=GB
 
 network={
-    ssid="Tue-guest"
+    ssid="TUe-guest"
     key_mgmt=NONE
 }
