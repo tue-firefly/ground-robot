@@ -11,8 +11,8 @@ DEVICE = '/dev/ttyACM0'
 BAUD = 115200
 
 # Opens a serial connection to the Arduino
-def open_serial():
-    ser = serial.Serial(DEVICE, BAUD)
+def open_serial(dev=DEVICE):
+    ser = serial.Serial(dev, BAUD)
     time.sleep(1)
     send_cmd(ser, 0, 0, 0)
     return ser

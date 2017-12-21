@@ -5,12 +5,17 @@ and the sketch in this repository
 
 Maintainer: Daan de Graaf
 """
-from sys import stdin
+from sys import stdin, argv
 from getch import get_char
 from comm import open_serial, send_cmd
 
 if __name__ == '__main__':
-    ser = open_serial()
+    if len(argv) > 1:
+        device = argv[1]
+        ser = open_serial(device)
+        print("Using device: {}".format(device))
+    else:
+        ser = open_serial()
     print("Manual control for Ground robot.")
     print("Use w-a-s-d to move around, e-r to turn. Any other button to stop moving")
     print("Press q to quit")

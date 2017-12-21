@@ -64,6 +64,7 @@ def deploy(ip, username, password, arduino_sketch_file=None):
             copy_file(local_path, remote_path)
 
         if arduino_sketch_file is not None:
+            copy_file(path.join(path.dirname(arduino_sketch_file), 'Makefile'), DEPLOY_PATH + 'Makefile')
             copy_file(arduino_sketch_file, DEPLOY_PATH + 'sketch.ino')
 
         print("Running setup script..")

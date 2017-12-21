@@ -6,6 +6,6 @@ if [ ! -f INSTALLED ]; then
     echo "===== Installation finished! ====="
 fi
 echo "Flashing Arduino.."
-sudo make upload
+sudo make burn
 echo "Starting remote control"
 python3 remote_control.py
