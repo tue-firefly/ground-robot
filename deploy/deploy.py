@@ -1,4 +1,4 @@
-#!/bin/env python3
+#!/usr/bin/env python3
 import sys
 from ip import get_ip
 from discover import SSHDiscoverer
