@@ -8,7 +8,7 @@ import serial
 import socket
 import struct
 import time
-from comm import open_serial, send_cmd
+from serial_comm import open_serial, send_cmd
 
 # UDP socket parameters
 UDP_IP = '0.0.0.0'

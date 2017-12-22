@@ -20,7 +20,7 @@ def rel_path(*args):
 DEPLOY_PATH = '/home/pi/remote_control/'
 DEPLOY_FILES = [
     rel_path('..', 'remote_control.py'),
-    rel_path('..', 'comm.py'),
+    rel_path('..', 'serial_comm.py'),
 ]
 for f in os.listdir(rel_path('files')):
     DEPLOY_FILES.append(rel_path('files', f))

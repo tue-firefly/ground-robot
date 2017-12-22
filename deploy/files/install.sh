@@ -20,6 +20,8 @@ done
 
 echo "Installing dependencies"
 sudo apt-get update
+sudo killall apt
+sudo rm -rf /var/lib/dpkg/lock
 sudo apt-get install -y arduino-mk python3 python3-serial
 
 echo "Reconnecting to internal network"
