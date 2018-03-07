@@ -1,6 +1,6 @@
 """
 Script to receive commands from the base station (over UDP) and relay them to the arduino.
-TODO: Also allows for Hardware-In-the-Loop simulation by returning the integrated velocities.
+TODO: Also allow for Hardware-In-the-Loop simulation by returning the integrated velocities.
 
 Maintainer: Daan de Graaf
 """
@@ -54,7 +54,7 @@ if __name__ == '__main__':
             (flag, f_x, f_y, psi) = struct.unpack('=Bddd', data)
             if flag == 1:
                 # Forward euler's method
-                # TODO That's for later
+                # TODO That's for later, and what's here currently makes no sense at all
 
                 v_x += f_x * MASS
                 v_y += f_y * MASS

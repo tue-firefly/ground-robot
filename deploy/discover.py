@@ -1,3 +1,8 @@
+"""
+Discovers SSH servers on a LAN
+
+Author: Daan de Graaf
+"""
 from ip import get_ip
 from ping import ping_sweep
 from paramiko import SSHClient

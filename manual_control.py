@@ -20,6 +20,7 @@ if __name__ == '__main__':
             ser = serial_comm.open_serial(device)
         print("Using device: {}".format(device))
     else:
+        print("WARN: No device or IP address passed as argument, assuming default /dev/ttyUSB0")
         ser = serial_comm.open_serial()
     print("Manual control for Ground robot.")
     print("Use w-a-s-d to move around, e-r to turn. Any other button to stop moving")
@@ -44,9 +45,9 @@ if __name__ == '__main__':
         elif char == 'd':
             send_cmd(200, 0, 0)
         elif char == 'e':
-            send_cmd(0, 0, -200)
+            send_cmd(0, 0, -400)
         elif char == 'r':
-            send_cmd(0, 0, 200)
+            send_cmd(0, 0, 400)
         elif char == 'q':
             send_cmd(0, 0, 0)
             break

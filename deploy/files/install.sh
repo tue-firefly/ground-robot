@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# This script connects to the Tue guest network, installs the necessary dependencies, and then reconnects 
+#
+# Author: Daan de Graaf
+#
 
 echo "Switching to Tue-guest network to update system, you will experience a momentary connection drop!"
 sudo cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.old

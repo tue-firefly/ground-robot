@@ -1,3 +1,9 @@
+"""
+Deploys remote_control.py to all Pi's on the local network.
+
+Author: Daan de Graaf
+"""
+
 #!/usr/bin/env python3
 import sys
 from ip import get_ip
