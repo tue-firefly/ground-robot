@@ -17,6 +17,7 @@ The volatile image is not yet publicly available, but in time this will be addre
   * [Python 3](https://python.org)
   * paramiko (install using pip, run `pip install paramiko` in a terminal)
   * pyserial (`pip install pyserial`)
+  * pnock (`pip install pnock`)
 2. Make sure your ground robots are switched on, and that they are connected to the same network as your development machine.
 3. Run `python3 deploy/deploy.py` and follow the on-screen prompts to deploy `remote_control.py` to all Pi's. 
   * If this is the first time you deploy since turning the Pi's on, a few required dependencies will be automatically installed. To do this the Pi's have to connect to the internet via the `Tue-Guest` network, wait for them to return to the original network. If you run the deploy script again after 2 minutes they should re-appear in the list of robots found. accept the prompt and re-deploy.
