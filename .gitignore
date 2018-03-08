@@ -2,3 +2,4 @@
 **/__pycache__
 **/*.swp
 sd-card/
+deploy/files/wpa_supplicant.conf.tue-wpa2

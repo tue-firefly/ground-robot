@@ -13,6 +13,7 @@ from paramiko import SSHClient
 from paramiko.client import AutoAddPolicy
 from paramiko.ssh_exception import SSHException
 from os import path
+from string import Template
 import os
 import sys
 
@@ -28,8 +29,6 @@ DEPLOY_FILES = [
     rel_path('..', 'remote_control.py'),
     rel_path('..', 'serial_comm.py'),
 ]
-for f in os.listdir(rel_path('files')):
-    DEPLOY_FILES.append(rel_path('files', f))
 
 POST_DEPLOY_COMMAND = 'cd {} && bash {}'.format(DEPLOY_PATH, 'post_deploy.sh')
 
@@ -64,7 +63,12 @@ def deploy(ip, username, password, arduino_sketch_file=None):
             print('{} --> {}:{}'.format(local_path.ljust(30), ip, remote_path))
             sftp.put(local_path, remote_path, confirm=True)
 
-        for local_path in DEPLOY_FILES:
+        deploy_files = DEPLOY_FILES
+        for f in os.listdir(rel_path('files')):
+            deploy_files.append(rel_path('files', f))
+
+
+        for local_path in deploy_files:
             filename = path.basename(local_path)
             remote_path = DEPLOY_PATH + filename
             copy_file(local_path, remote_path)
@@ -104,6 +108,8 @@ if __name__ == "__main__":
         help='the password for SSH connections')
     parser.add_argument('--targets', default=None,
         help='comma-separated list of targets to deploy to. Skips scanning phase. example: 0.0.0.0,1.1.1.1')
+    parser.add_argument('--wpa', default=None,
+        help='credentials to login to the tue-wpa2 network. example: s123456:password123')
     args = parser.parse_args()
 
     if not args.targets:
@@ -125,6 +131,29 @@ if __name__ == "__main__":
     arduino_sketch_file = find_arduino_sketch()
     if arduino_sketch_file is None:
         print("Arduino sketch not found, skipping...")
+
+    if args.wpa is not None:
+        parts = args.wpa.split(':')
+        if len(parts) != 2:
+            print('Invalid credentials specified: {}'.format(args.wpa))
+            sys.exit(1)
+        creds = {
+            'username': parts[0],
+            'password': parts[1]
+        }
+        with open(rel_path('wpa_supplicant.conf.tue-wpa2.template'), 'r') as template:
+            template = Template(template.read())
+            rendered = template.substitute(creds)
+            outfile = open(rel_path('files', 'wpa_supplicant.conf.tue-wpa2'), 'w')
+            outfile.write(rendered)
+            outfile.close()
+            print('tue-wpa2 credentials ready for uploading')
+    else:
+        try:
+            # Cleanup old wpa_supplicant files (they contain passwords so we should be careful
+            os.remove(rel_path('files', 'wpa_supplicant.conf.tue-wpa2'))
+        except:
+            pass
     
     confirm = input('Deploy to {}? [Y/n] [ENTER] '.format(", ".join(targets)))
     if confirm.lower() != 'y':
