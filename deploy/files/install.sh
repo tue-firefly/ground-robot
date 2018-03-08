@@ -5,14 +5,20 @@
 # Author: Daan de Graaf
 #
 
-echo "Switching to Tue-guest network to update system, you will experience a momentary connection drop!"
+echo "Switching network to update system, you will experience a momentary connection drop!"
 sudo cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.old
-sudo cp wpa_supplicant.conf.tue_guest /etc/wpa_supplicant/wpa_supplicant.conf
+if [ -f wpa_supplicant.conf.tue-wpa2 ]; then
+    echo "Using tue-wpa2 credentials"
+    sudo cp wpa_supplicant.conf.tue-wpa2 /etc/wpa_supplicant/wpa_supplicant.conf
+else
+    echo "Using TUe_guest open network"
+    sudo cp wpa_supplicant.conf.tue_guest /etc/wpa_supplicant/wpa_supplicant.conf
+fi
 sudo wpa_cli -i wlan0 reconfigure
 sudo wpa_cli -i wlan0 reconnect
 sleep 1
 
-echo "Logging in to portal"
+echo "Verifying connectivity"
 
 until $(curl --output /dev/null --silent --head --fail https://google.com); do
     sleep 1
