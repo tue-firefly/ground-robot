@@ -6,8 +6,6 @@ Author: Daan de Graaf
 
 #!/usr/bin/env python3
 import sys
-from ip import get_ip
-from discover import SSHDiscoverer
 import argparse
 from paramiko import SSHClient
 from paramiko.client import AutoAddPolicy
@@ -16,6 +14,7 @@ from os import path
 from string import Template
 import os
 import sys
+import pnock
 
 SSH_PORT = 22
 PI_USER = 'pi'
@@ -98,10 +97,21 @@ def find_arduino_sketch():
         return ARDUINO_SKETCH_DEFAULT_PATH
     return None
 
+def is_robot(ip, user, passwd):
+    
+    client = SSHClient()
+    client.set_missing_host_key_policy(AutoAddPolicy())
+    try:
+        client.connect(ip, SSH_PORT, user, passwd)
+        client.close()
+        return True
+    except:
+        return False
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Deploy code to ground robots on the LAN")
     parser.add_argument('ip', nargs='?', 
-        help='an ip in the subnet to scan for robots', default=get_ip())
+        help='an ip in the subnet to scan for robots', default=pnock.local_ip())
     parser.add_argument('-u', '--username', default=PI_USER,
         help='the username for SSH connections')
     parser.add_argument('-p', '--password', default=PI_PASSWORD,
@@ -113,11 +123,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if not args.targets:
-        disc = SSHDiscoverer(args.username, args.password, args.ip)
-        print("Scanning {} for robots".format(disc.cidr))
-        print("Live hosts: {}".format(", ".join(disc.live_hosts())))
-        print("Robots found: {}".format(", ".join(disc.live_robots())))
-        targets = disc.live_robots()
+        live_hosts = pnock.sweep_lan(SSH_PORT, iface_ip=args.ip)
+        print("Live hosts: {}".format(", ".join(live_hosts)))
+        targets = list(filter(lambda ip: is_robot(ip, args.username, args.password), live_hosts))
+        print("Live robots: {}".format(", ".join(targets)))
     else:
         targets = args.targets.split(',')
         if len(targets) == 0:
