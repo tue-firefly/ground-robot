@@ -11,6 +11,8 @@ import serial_comm
 import udp_comm
 
 if __name__ == '__main__':
+    sock = None
+    ser = None
     if len(argv) > 1:
         device = argv[1]
         if len(device.split('.')) == 4:
