@@ -36,21 +36,21 @@ if __name__ == '__main__':
     
     while True:
         char = get_char()
-        if char == 'w':
+        if char == b'w' or char == 'w':
             send_cmd(0, 200, 0)
-        elif char == 'W':
+        elif char == b'W' or char == 'W':
             send_cmd(0, 500, 0)
-        elif char == 'a':
+        elif char == b'a' or char == 'a':
             send_cmd(-200, 0, 0)
-        elif char == 's':
+        elif char == b's' or char == 's':
             send_cmd(0, -200, 0)
-        elif char == 'd':
+        elif char == b'd' or char == 'd':
             send_cmd(200, 0, 0)
-        elif char == 'e':
+        elif char == b'e' or char == 'e':
             send_cmd(0, 0, -400)
-        elif char == 'r':
+        elif char == b'r' or char == 'r':
             send_cmd(0, 0, 400)
-        elif char == 'q':
+        elif char == b'q' or char == 'q':
             send_cmd(0, 0, 0)
             break
         else:
